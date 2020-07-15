@@ -1,2 +1,2 @@
-# laravel_repo_testing
-Testing Laravel repository
+
+# repository design pattern in laravel
