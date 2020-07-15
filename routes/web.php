@@ -13,7 +13,7 @@
 
 
 
-
+Route::get('/',function(){return view('home');});
 
 Route::get('todos','TodoController@index');
 Route::post('todo','TodoController@store');
