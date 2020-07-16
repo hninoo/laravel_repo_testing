@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Feeds;
 
 class HomeController extends Controller
 {
@@ -12,10 +11,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Show the application dashboard.
@@ -26,20 +25,4 @@ class HomeController extends Controller
     {
         return view('home');
     }
-
-    public function demo() {
-        $feed = Feeds::make('http://thevoicemyanmar.com/feed');
-
-        // dd($feed);
-
-        $data = array(
-          'title'     => $feed->get_title(),
-          'permalink' => $feed->get_permalink(),
-          'items'     => $feed->get_items(),
-        );
-    
-       return $data;
-        // return View::make('feed', $data);
-
-      }
 }
