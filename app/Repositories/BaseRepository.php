@@ -12,6 +12,10 @@ abstract class BaseRepository
     {
         return $this->model->create($data);
     }
+    public function getAll()
+    {
+        return $this->model->orderBy('id','DESC')->get();
+    }
 
 
 }

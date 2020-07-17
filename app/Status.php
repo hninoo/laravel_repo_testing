@@ -4,11 +4,11 @@ namespace App;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class Status extends Model
 {
     use Authenticatable;
 
-    protected $table = 'tasks';
+    protected $table = 'statuses';
 
     protected $fillable = ['name'];
 
@@ -17,5 +17,4 @@ class Task extends Model
     {
         return $this->hasMany('App\Todo');
     }
-
 }

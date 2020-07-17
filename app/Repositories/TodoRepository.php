@@ -3,36 +3,31 @@
 namespace App\Repositories;
 use App\Todo;
 
-class TodoRepository
+class TodoRepository extends BaseRepository
 {
-    public function all()
+    protected $model;
+
+	public function __construct(Todo $model)
+	{
+		$this->model = $model;
+    }
+    public function getById($id)
     {
-        return Todo::all();
+        return $this->model->findOrFail($id);
     }
 
-    public function findById($id)
+
+    public function taskassign($status)
     {
-        return Todo::FindOrFail($id);
-    }
-    public function create(array $attributes)
-    {
-        return Todo::create($attributes);
+
+        $data = [];
+
+        $data['status_id'] = $status;
+        $data['user_id'] = 1;
+
+        return $this->model->push($data);
     }
 
-    public function update(array $attributes)
-    {
-        $todo = Todo::where("id", $attributes['id'])->update([
-            "text" => $attributes['text'],
-            "user_id" => $attributes['user_id'],
-            "completed" => $attributes['completed']
-        ]);
-        return $todo;
-    }
 
-    public function delete($id)
-    {
-        $todo = Todo::findOrFail($id);
-        return $todo->destroy($id);
-    }
 
 }

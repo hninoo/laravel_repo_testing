@@ -3,9 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Repositories\TaskRepository;
+use App\Repositories\StatusRepository;
+use App\Repositories\TodoRepository;
 class TaskController extends Controller
 {
+
+    function __construct(TaskRepository $taskrepo,StatusRepository $statusrepo,TodoRepository $todorepo)
+	{
+        $this->taskrepo = $taskrepo;
+        $this->statusrepo = $statusrepo;
+        $this->todorepo = $todorepo;
+	}
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $data = $this->taskrepo->getAll();
+
+        $status = $this->statusrepo->statusAll();
+
+        return view('home',compact('data','status'));
     }
 
     /**
@@ -34,7 +48,13 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        return response::json($request->all());
+        $data = $request->all();
+        try{
+            $this->taskrepo->create($data);
+        }catch(\Exception $e){
+            return redirect()->back()->withInput();
+        }
+        return redirect()->back();
     }
 
     /**
@@ -80,5 +100,12 @@ class TaskController extends Controller
     public function destroy($id)
     {
         //
+    }
+    //assign status to task
+    public function assign(Request $request)
+    {
+
+       $response = $this->todorepo->taskassign($request->status,$request->task_id);
+       return redirect()->back();
     }
 }

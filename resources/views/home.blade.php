@@ -15,13 +15,10 @@
                     @endif
                     <div id="tasks">
                         <!-- The Form to Add a New Task -->
-                        {!! Form::open(['route'=>'task.save','method'=>'POST','id'=>'audio_create_form']) !!}
-                        {{-- <form v-on="submit: addTask"> --}}
+
+                        {!! Form::open(['route'=>'task.save','method'=>'POST']) !!}
                             <div class="form-group">
-                                <input v-model="newTask"
-                                       v-el="newTask"
-                                       class="form-control"
-                                       placeholder="I need to...">
+                                {{ Form::text('name','',array('class'=>'form-control','placeholder'=>'Enter Task')) }}
                             </div>
 
                             <button class="btn btn-primary">
@@ -29,22 +26,44 @@
                             </button>
 
                         {!! Form::close() !!}
-                        {{-- </form> --}}
+
 
                         <!-- The List of Todos -->
-                        <div v-show="remaining.length">
-                            <h1>Tasks (@{{ remaining.length }})</h1>
 
-                            <ol class="list-group">
-                                <li v-repeat="task: remaining"class="list-group-item">
-                                    <span>@{{ task.body }}</span>
+                        <div>
 
-                                    <button v-on="click: removeTask(task)">&#10007;</button>
-                                    <button v-on="click: toggleTaskCompletion(task)">&#10004</button>
-                                </li>
-                            </ol>
+                                @if(isset($data))
+                                <table class="table table-striped">
+                                    @foreach ($data as $key=>$item)
+                                    <tr>
+                                        <td>{{$item->task_name}}</td>
+                                        <td>{{$item->status->name}}</td>
+                                        <td>
+
+                                            {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                {{ Form::hidden('id',$item->id) }}
+                                                <button class="btn btn-xs btn-success" value="{{$status[2]->id}}" name="status">{{$status[2]->name}}</button>
+                                            {!! Form::close() !!}
+
+                                            {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                {{ Form::hidden('id',$item->id) }}
+                                                <button class="btn btn-xs btn-warning" value="{{$status[1]->id}}" name="status">{{$status[1]->name}}</button>
+                                            {!! Form::close() !!}
+
+                                            {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                {{ Form::hidden('id',$item->id) }}
+                                                <button class="btn btn-xs btn-danger" value="{{$status[0]->id}}" name="status">{{$status[0]->name}}</button>
+                                            {!! Form::close() !!}
+                                        </td>
+                                    </tr>
+
+                                    @endforeach
+                                </table>
+
+                                @endif
+
+
                         </div>
-
 
                     </div>
 
@@ -53,6 +72,6 @@
         </div>
     </div>
 </div>
-<script src="{{asset('public/js/custom.js')}}"></script>
+{{-- <script src="{{asset('public/js/custom.js')}}"></script> --}}
 @endsection
 

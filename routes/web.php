@@ -13,25 +13,16 @@
 
 
 
-Route::get('/', function () {
-	return redirect()->route('login');
-});
-Auth::routes(['register' => false, 'reset' => false, 'confirm' => false, 'verify' => false]);
-Route::group(['prefix' => 'control-panel', 'middleware' => 'auth'], function() {
-    Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
+
+	Route::get('/home', ['as' => 'home', 'uses' => 'TodoController@index']);
     Route::group(['prefix' => 'task'], function() {
-		Route::post('/save', ['as' => 'task.save', 'uses' => 'TaskController@store']);
+        Route::get('/tasks',['as' => 'task.index', 'uses' => 'TodoController@index']);
+        Route::post('/save', ['as' => 'task.save', 'uses' => 'TodoController@store']);
+        Route::post('assign/',['as' => 'task.assign','uses' => 'TodoController@assign']);
 
 	});
 
+    Route::get('todos','TodoController@index');
+    Route::post('todo','TodoController@store');
+    Route::get('todo/{id}','TodoController@show');
 
-});
-
-Route::get('todos','TodoController@index');
-Route::post('todo','TodoController@store');
-Route::get('todo/{id}','TodoController@show');
-
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

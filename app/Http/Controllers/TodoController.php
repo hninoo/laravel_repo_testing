@@ -3,50 +3,113 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use  App\Repositories\TodoRepository;
-use App\Todo;
-
+use App\Repositories\StatusRepository;
+use App\Repositories\TodoRepository;
 class TodoController extends Controller
 {
-    private $todo;
 
-    public function __construct(TodoRepository $todoRepo)
-    {
-        $this->todo = $todoRepo;
-    }
+    function __construct(StatusRepository $statusrepo,TodoRepository $todorepo)
+	{
 
+        $this->statusrepo = $statusrepo;
+        $this->todorepo = $todorepo;
+	}
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $todo = $this->todo->all();
+        $data = $this->todorepo->getAll();
 
-        return $todo;
+        $status = $this->statusrepo->statusAll();
+
+        return view('home',compact('data','status'));
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
+        $data = [];
+        $data['task_name'] = $request->name;
+        $data['user_id'] = 1;
+        $data['status_id'] = 1;
 
-        $todo = $this->todo->create($request->all());
-
-        return response()->json($todo);
-
+        try{
+            $this->todorepo->create($data);
+        }catch(\Exception $e){
+            echo $e->getMessage();
+            // return redirect()->back()->withInput();
+        }
+        return redirect()->back();
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
-        $todo = $this->todo->findById($id);
-
-        return response()->json($todo);
+        //
     }
-    public function update(Request $request)
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
-
-        $todo = $this->todo->update($request->all());
-
-        return response()->json(["todo_update" => $todo]);
+        //
     }
-    public function delete($id)
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
     {
-        $todo = $this->todo->delete($id);
+        //
+    }
 
-        return response()->json(["success" => "successfully deleted "]);
-
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+    //assign status to task
+    public function assign(Request $request)
+    {
+        dd($request);
+       $response = $this->todorepo->taskassign($request->status);
+       return redirect()->back();
     }
 }
