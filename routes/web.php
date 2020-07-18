@@ -18,7 +18,8 @@
     Route::group(['prefix' => 'task'], function() {
         Route::get('/tasks',['as' => 'task.index', 'uses' => 'TodoController@index']);
         Route::post('/save', ['as' => 'task.save', 'uses' => 'TodoController@store']);
-        Route::post('assign/',['as' => 'task.assign','uses' => 'TodoController@assign']);
+        Route::post('assign/',['as' => 'task.assign','uses' => 'TodoController@update']);
+        Route::delete('/delete', ['as' => 'task.delete', 'uses' => 'TodoController@destroy']);
 
 	});
 

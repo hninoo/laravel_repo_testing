@@ -47,6 +47,14 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validator = $this->todorepo->validator($request->all());
+        if($validator->fails()){
+          
+            return back()->withErrors($validator)->withInput();
+                               
+        }
+
         $data = [];
         $data['task_name'] = $request->name;
         $data['user_id'] = 1;
@@ -58,7 +66,7 @@ class TodoController extends Controller
             echo $e->getMessage();
             // return redirect()->back()->withInput();
         }
-        return redirect()->back();
+        return redirect()->back()->with('status','Success!');
     }
 
     /**
@@ -90,9 +98,11 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+       $response = $this->todorepo->taskassign($request->id,$request->status);
+     
+       return redirect()->back()->with('status','Update Success!');
     }
 
     /**
@@ -101,15 +111,10 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $this->todorepo->delete($request->id);
+        return redirect()->back()->with('status','Delete Success!');
     }
-    //assign status to task
-    public function assign(Request $request)
-    {
-        dd($request);
-       $response = $this->todorepo->taskassign($request->status);
-       return redirect()->back();
-    }
+   
 }
