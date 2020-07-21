@@ -15,11 +15,10 @@ class CreateTodosTable extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('task_id');
+            $table->string('task_name');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('status_id');
             $table->timestamps();
-            $table->foreign('task_id')->references('id')->on('tasks');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('status_id')->references('id')->on('statuses');
 
