@@ -23,7 +23,6 @@ class TodoController extends Controller
     public function index()
     {
         $data = $this->todorepo->getAll();
-
         $status = $this->statusrepo->statusAll();
 
         return view('home',compact('data','status'));
@@ -50,21 +49,20 @@ class TodoController extends Controller
 
         $validator = $this->todorepo->validator($request->all());
         if($validator->fails()){
-          
-            return back()->withErrors($validator)->withInput();
-                               
-        }
 
+            return back()->withErrors($validator)->withInput();
+
+        }
         $data = [];
-        $data['task_name'] = $request->name;
+
+        $data['task_name'] = $request->task_name;
         $data['user_id'] = 1;
         $data['status_id'] = 1;
-
         try{
             $this->todorepo->create($data);
         }catch(\Exception $e){
             echo $e->getMessage();
-            // return redirect()->back()->withInput();
+
         }
         return redirect()->back()->with('status','Success!');
     }
@@ -101,7 +99,7 @@ class TodoController extends Controller
     public function update(Request $request)
     {
        $response = $this->todorepo->taskassign($request->id,$request->status);
-     
+
        return redirect()->back()->with('status','Update Success!');
     }
 
@@ -116,5 +114,5 @@ class TodoController extends Controller
         $this->todorepo->delete($request->id);
         return redirect()->back()->with('status','Delete Success!');
     }
-   
+
 }

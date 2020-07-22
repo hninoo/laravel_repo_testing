@@ -1,6 +1,6 @@
 <?php
 namespace App\Repositories;
-use Illuminate\Support\Facades\Validator;
+
 abstract class BaseRepository
 {
     protected $model;
@@ -21,32 +21,18 @@ abstract class BaseRepository
     {
         return $this->model->findOrFail($id);
     }
-
-
-    public function taskassign($id,$status)
+    public function update(array $data, $id)
     {
-
         $model = $this->getById($id);
-
-        $data = [];
-
-        $data['status_id'] = $status;
-        $data['user_id'] = 1;
         $model->fill($data);
         return $model->push();
-        
     }
+    
     public function delete($id)
     {
         return $this->model->destroy($id);
     }
-    public function validator(array $data)
-    {
-        $validator = Validator::make($data,[
-            'name' => 'required',
-        ]);
-        return $validator;
-    }
+
 
 
 }

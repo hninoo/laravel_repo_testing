@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repositories;
+use Illuminate\Support\Facades\Validator;
 use App\Todo;
 
 class TodoRepository extends BaseRepository
@@ -11,5 +12,25 @@ class TodoRepository extends BaseRepository
 	{
 		$this->model = $model;
     }
-    
+    public function validator(array $data)
+    {
+        $validator = Validator::make($data,[
+            'task_name' => 'required|string|unique:todos',
+        ]);
+        return $validator;
+    }
+    public function taskassign($id,$status)
+    {
+
+        $model = $this->getById($id);
+
+        $data = [];
+
+        $data['status_id'] = $status;
+        $data['user_id'] = 1;
+        $model->fill($data);
+        return $model->push();
+
+    }
+
 }

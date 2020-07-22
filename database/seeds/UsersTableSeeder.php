@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use Spatie\Permission\Models\Role;
+use App\User;
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -11,10 +12,18 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        $adminRole = Role::whereName('admin')->first();
+        $user = User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
+            'role_id' => $adminRole->id,
             'password' => Hash::make('123456'),
+            'created_at' => date('Y-m-d H:m:s'),
+            'updated_at' => date('Y-m-d H:m:s'),
         ]);
+
+        $role = Role::find(1);
+
+        $user->assignRole($role->name);
     }
 }
