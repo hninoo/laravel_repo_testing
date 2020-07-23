@@ -31,7 +31,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <div id="tasks">
+                    <div>
                         <!-- The Form to Add a New Task -->
 
                         {!! Form::open(['route'=>'task.save','method'=>'POST']) !!}
@@ -61,48 +61,70 @@
                                 <table class="table table-striped task-table">
                                     <thead>
                                         <tr>
+                                            <th>All<br>{!! Form::checkbox('id','','', array('id'=>'selectall')) !!}</th>
                                             <th>Name</th>
                                             <th>status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($data as $key=>$item)
+                                            @foreach ($data as $key=>$item)
+                                            <tr>
+                                                <td>{!! Form::checkbox('id[]', $item->id,'', array('class'=>'todols')) !!}</td>
+                                                <td>{{$item->task_name}}</td>
+                                                <td>{{$item->status->name}}</td>
+                                                <td class="row">
+                                                    @can('edit_task')
+                                                        {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                            {{ Form::hidden('id',$item->id) }}
+                                                            <button class="btn btn-xs btn-info" value="{{$status[0]->id}}" name="status">{{$status[0]->name}}</button>
+                                                        {!! Form::close() !!}
+
+                                                        {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                        {{ Form::hidden('id',$item->id) }}
+                                                        <button class="btn btn-xs btn-warning" value="{{$status[1]->id}}" name="status">{{$status[1]->name}}</button>
+                                                        {!! Form::close() !!}
+                                                        {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                            {{ Form::hidden('id',$item->id) }}
+                                                            <button class="btn btn-xs btn-success" value="{{$status[2]->id}}" name="status">{{$status[2]->name}}</button>
+                                                        {!! Form::close() !!}
+                                                    @endcan
+
+
+
+                                                    @can('delete_task')
+                                                        {!! Form::open(['route'=>'task.delete','method'=>'delete']) !!}
+                                                            {{ Form::hidden('id',$item->id) }}
+                                                            <button class="btn btn-xs btn-danger">Delete</button>
+
+                                                        {!! Form::close() !!}
+                                                    @endcan
+
+                                                </td>
+                                            </tr>
+
+                                            @endforeach
+
+                                    </tbody>
+
+                                    <tfoot>
+
                                         <tr>
-                                            <td>{{$item->task_name}}</td>
-                                            <td>{{$item->status->name}}</td>
-                                            <td class="row">
-                                                @can('edit_task')
-                                                    {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
-                                                        {{ Form::hidden('id',$item->id) }}
-                                                        <button class="btn btn-xs btn-info" value="{{$status[0]->id}}" name="status">{{$status[0]->name}}</button>
-                                                    {!! Form::close() !!}
 
-                                                    {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
-                                                    {{ Form::hidden('id',$item->id) }}
-                                                    <button class="btn btn-xs btn-warning" value="{{$status[1]->id}}" name="status">{{$status[1]->name}}</button>
-                                                    {!! Form::close() !!}
-                                                    {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
-                                                        {{ Form::hidden('id',$item->id) }}
-                                                        <button class="btn btn-xs btn-success" value="{{$status[2]->id}}" name="status">{{$status[2]->name}}</button>
-                                                    {!! Form::close() !!}
-                                                @endcan
+                                            <td colspan="3">
+                                                {!! Form::open(['route'=>'task.generatepdf','method'=>'GET']) !!}
+                                                    <div id="pdf"></div>
+                                                    <button class="btn btn-primary" type="submit">Export PDF</button>
+                                               {!! Form::close() !!}
+                                            </td>
+                                            <td  style="text-align: right;">
 
-
-
-                                                @can('delete_task')
-                                                    {!! Form::open(['route'=>'task.delete','method'=>'delete']) !!}
-                                                        {{ Form::hidden('id',$item->id) }}
-                                                        <button class="btn btn-xs btn-danger">Delete</button>
-
-                                                    {!! Form::close() !!}
-                                                @endcan
-
+                                               {!! Form::open(['route' => 'task.export' , 'method'=>'GET']) !!}
+                                                    <button class="btn btn-primary" type="submit">Export Excel</button>
+                                               {!! Form::close() !!}
                                             </td>
                                         </tr>
-
-                                        @endforeach
-                                    </tbody>
+                                    </tfoot>
                                 </table>
 
                                 @endif
@@ -119,4 +141,34 @@
 
 
 @endsection
+@section('adminlte_js')
+<script>
+$(document).ready(function(){
+    $('#pdf').text("<li><a href='someLink'>Some Link</a></li>");
+    // $("#hiddenid").val(Geeks);
+    let n = $('.todols').length;
+    let array = $('.todols');
+    let value=[];
+    for(i=0;i<n;i++)
+    {
+        value =  array[i].value;
+        console.log(value);
+
+        $("#pdf").html('<input type="hidden" name="hiddenid" value="'+value+"'");
+    }
+
+    $('#selectall').click(function() {
+            if ($(this).is(':checked')) {
+                $('input.todols').attr('checked', true);
+            } else {
+                $('input.todols').attr('checked', false);
+            }
+        });
+
+
+
+});
+
+</script>
+@stop
 

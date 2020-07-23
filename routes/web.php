@@ -44,6 +44,8 @@
             Route::post('/save', ['as' => 'task.save', 'uses' => 'TodoController@store']);
             Route::post('assign/', ['as' => 'task.assign','uses' => 'TodoController@update']);
             Route::delete('/delete', ['as' => 'task.delete', 'uses' => 'TodoController@destroy']);
+            Route::get('/export',['as' => 'task.export','uses' => 'TodoController@todosExport']);
+            Route::get('/generatepdf',['as' => 'task.generatepdf','uses' => 'TodoController@generatePDF']);
         });
         Route::group(['prefix' => 'permission'], function () {
             Route::get('/permission',['as' => 'permission.index' , 'uses' => 'PermissionController@index']);

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\StatusRepository;
 use App\Repositories\TodoRepository;
+use App\Exports\TodosExport;
+use Maatwebsite\Excel\Facades\Excel;
 class TodoController extends Controller
 {
 
@@ -93,7 +95,6 @@ class TodoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
@@ -105,8 +106,7 @@ class TodoController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
@@ -114,5 +114,24 @@ class TodoController extends Controller
         $this->todorepo->delete($request->id);
         return redirect()->back()->with('status','Delete Success!');
     }
+
+    /**
+     * Export Excel
+     */
+    public function todosExport()
+    {
+        $export = $this->todorepo->getAll();
+        return Excel::download(
+            new TodosExport( $export ), 'report.xlsx');
+
+    }
+    /**
+     * Generate Pdf
+     */
+    public function generatePDF(Request $request)
+    {
+       dd($request);
+    }
+
 
 }
