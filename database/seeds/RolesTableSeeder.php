@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use Spatie\Permission\Models\Role;
 class RolesTableSeeder extends Seeder
 {
     /**
@@ -11,14 +11,7 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        
-        DB::table('roles')->insert([
-            [
-                'name' => 'admin',
-                'guard_name' => 'web',
-                'created_at' => date('Y-m-d H:m:s'),
-                'updated_at' => date('Y-m-d H:m:s'),
-            ]
-        ]);
+
+        $role = Role::create(['name' => 'admin','guard_name'=>'web']);
     }
 }

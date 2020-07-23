@@ -41,12 +41,16 @@
                             <div class="row"><h4><i class="fas fa-check-circle"></i>Permissions</h4></div>
                             <div class="row">
                                 @foreach ($permissions as $key=>$allPermissions)
+
                                     <?php
+
                                         $per_found = false;
 
                                         if( isset($role) ) {
+
                                             $per_found = $role->hasPermissionTo($allPermissions->name);
                                         }
+                                      
 
                                     ?>
 

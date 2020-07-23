@@ -33,8 +33,10 @@
         Route::group(['prefix' => 'users'], function () {
             Route::get('users',['as'=>'users.index','uses'=>'UserController@index']);
             Route::get('/create', ['as' => 'users.create' , 'uses' => 'UserController@create']);
-            Route::get('save',['as'=>'users.save','uses'=>'UserController@store']);
-            Route::get('delete',['as'=>'users.delete','uses'=>'UserController@destory']);
+            Route::post('save',['as'=>'users.save','uses'=>'UserController@store']);
+            Route::get('/edit', ['as' => 'users.edit' , 'uses' => 'UserController@edit']);
+            Route::post('update',['as'=>'users.update','uses'=>'UserController@update']);
+            Route::delete('delete',['as'=>'users.delete','uses'=>'UserController@destroy']);
         });
         Route::group(['prefix' => 'task'], function () {
 

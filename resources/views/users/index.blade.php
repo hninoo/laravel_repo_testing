@@ -7,10 +7,12 @@
             <div class="card">
                 <div class="card-header">
                     Role List
-                    <a href="{{route('users.create')}}">
+                    @can('create_user')
+                        <a href="{{route('users.create')}}">
 
-                        <button type="button" class="btn btn-link role-create"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Create New User</button>
-                    </a>
+                            <button type="button" class="btn btn-link role-create"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Create New User</button>
+                        </a>
+                    @endcan
                 </div>
 
                 <div class="card-body">
@@ -36,17 +38,20 @@
                                             <td>{{$item->name}}</td>
                                             <td></td>
                                             <td class="row">
-                                                {!! Form::open(['route'=>'role.edit','method'=>'get']) !!}
-                                                {{ Form::hidden('id',$item->id) }}
-                                                <button class="btn btn-xs btn-success">Edit</button>
+                                                @can('edit_user')
+                                                    {!! Form::open(['route'=>'users.edit','method'=>'get']) !!}
+                                                        {{ Form::hidden('id',$item->id) }}
+                                                        <button class="btn btn-xs btn-success">Edit</button>
 
-                                                {!! Form::close() !!}
+                                                    {!! Form::close() !!}
+                                                @endcan
+                                                @can('delete_user')
+                                                    {!! Form::open(['route'=>'users.delete','method'=>'delete']) !!}
+                                                        {{ Form::hidden('id',$item->id) }}
+                                                        <button class="btn btn-xs btn-danger">Delete</button>
 
-                                                {!! Form::open(['route'=>'users.delete','method'=>'delete']) !!}
-                                                    {{ Form::hidden('id',$item->id) }}
-                                                    <button class="btn btn-xs btn-danger">Delete</button>
-
-                                                {!! Form::close() !!}
+                                                    {!! Form::close() !!}
+                                                @endcan
                                             </td>
                                         </tr>
 

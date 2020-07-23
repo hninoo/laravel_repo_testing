@@ -44,10 +44,11 @@
                                         {{ $errors->first('task_name') }}
                                     </span>
                             @endif
-
-                            <button class="btn btn-primary">
-                                Add Task
-                            </button>
+                            @can('create_task')
+                                <button class="btn btn-primary">
+                                    Add Task
+                                </button>
+                            @endcan
 
                         {!! Form::close() !!}
 
@@ -71,28 +72,31 @@
                                             <td>{{$item->task_name}}</td>
                                             <td>{{$item->status->name}}</td>
                                             <td class="row">
-                                                {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                @can('edit_task')
+                                                    {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                        {{ Form::hidden('id',$item->id) }}
+                                                        <button class="btn btn-xs btn-info" value="{{$status[0]->id}}" name="status">{{$status[0]->name}}</button>
+                                                    {!! Form::close() !!}
+
+                                                    {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
                                                     {{ Form::hidden('id',$item->id) }}
-                                                    <button class="btn btn-xs btn-info" value="{{$status[0]->id}}" name="status">{{$status[0]->name}}</button>
-                                                {!! Form::close() !!}
-
-                                                {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
-                                                {{ Form::hidden('id',$item->id) }}
-                                                <button class="btn btn-xs btn-warning" value="{{$status[1]->id}}" name="status">{{$status[1]->name}}</button>
-                                                {!! Form::close() !!}
-                                                {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
-                                                    {{ Form::hidden('id',$item->id) }}
-                                                    <button class="btn btn-xs btn-success" value="{{$status[2]->id}}" name="status">{{$status[2]->name}}</button>
-                                                {!! Form::close() !!}
+                                                    <button class="btn btn-xs btn-warning" value="{{$status[1]->id}}" name="status">{{$status[1]->name}}</button>
+                                                    {!! Form::close() !!}
+                                                    {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
+                                                        {{ Form::hidden('id',$item->id) }}
+                                                        <button class="btn btn-xs btn-success" value="{{$status[2]->id}}" name="status">{{$status[2]->name}}</button>
+                                                    {!! Form::close() !!}
+                                                @endcan
 
 
 
+                                                @can('delete_task')
+                                                    {!! Form::open(['route'=>'task.delete','method'=>'delete']) !!}
+                                                        {{ Form::hidden('id',$item->id) }}
+                                                        <button class="btn btn-xs btn-danger">Delete</button>
 
-                                                {!! Form::open(['route'=>'task.delete','method'=>'delete']) !!}
-                                                    {{ Form::hidden('id',$item->id) }}
-                                                    <button class="btn btn-xs btn-danger">Delete</button>
-
-                                                {!! Form::close() !!}
+                                                    {!! Form::close() !!}
+                                                @endcan
 
                                             </td>
                                         </tr>

@@ -103,10 +103,17 @@
                                     <span>&nbsp; Setting  &nbsp;</span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="{{route('role.index')}}">Role</a>
-                              <a class="dropdown-item" href="{{route('permission.index')}}">Permission</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{{route('users.index')}}">Users</a>
+                                @can('role_list')
+                                    <a class="dropdown-item" href="{{route('role.index')}}">Role</a>
+                                @endcan
+                                @can('permission_list')
+                                    <a class="dropdown-item" href="{{route('permission.index')}}">Permission</a>
+                                @endcan
+
+                                <div class="dropdown-divider"></div>
+                                @can('user_list')
+                                    <a class="dropdown-item" href="{{route('users.index')}}">Users</a>
+                                @endcan
                             </div>
                         </li>
                         <li class="nav-item" >

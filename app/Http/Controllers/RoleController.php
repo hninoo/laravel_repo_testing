@@ -104,33 +104,66 @@ class RoleController extends Controller
      */
     public function update(Request $request)
     {
-        $role = $this->roleRepo->getById($request->id);
-        $existingRecCheck = (strtolower(trim($request->input('name'))) != strtolower($role->name));
-        if($existingRecCheck){
-            $validator = $this->roleRepo->updateValidator($request->all());
+
+
+        $role = $this->roleRepo->existcheck($request->id);
+
+        if($role!=null){
+            $existingRecCheck = (strtolower(trim($request->input('name'))) == strtolower($role->name));
+            if($existingRecCheck){
+                $validator = $this->roleRepo->validator($request->all());
+            }
+            else{
+                $validator = $this->roleRepo->updateValidator($request->all());
+
+            }
+            if($validator->fails()){
+
+                return back()->withErrors($validator)->withInput();
+
+            }
+
+            $rl = $this->roleRepo->getById($request->id);
+
+            try{
+
+
+                $rl->name = trim($request->input('name'));
+
+                $rl->save();
+
+                $permissions = [];
+                $permissions = $request->permission;
+                $rl->syncPermissions($permissions);
+
+            }catch(\Exception $e){
+                echo $e->getMessage();
+            }
+
+
+
         }
-        else{
-            $validator = $this->roleRepo->validator($request->all());
+        else
+        {
+            $rl = $this->roleRepo->getById($request->id);
+
+            try{
+
+
+                $rl->name = trim($request->input('name'));
+
+                $rl->save();
+
+                $permissions = [];
+                $permissions = $request->permission;
+                dd($permissions);
+                $rl->syncPermissions($permissions);
+
+            }catch(\Exception $e){
+                echo $e->getMessage();
+            }
         }
-        if($validator->fails()){
 
-            return back()->withErrors($validator)->withInput();
-
-        }
-
-        try{
-
-
-            $role->name = trim($request->input('name'));
-            $role->save();
-
-            $permissions = [];
-            $permissions = $request->permission;
-            $role->syncPermissions($permissions);
-
-        }catch(\Exception $e){
-            echo $e->getMessage();
-        }
         return redirect()->back()->with('status','Success!');
     }
 

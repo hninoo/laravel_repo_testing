@@ -34,10 +34,11 @@
                                         {{ $errors->first('name') }}
                                     </span>
                             @endif
-
+                        @can('create_permission')
                             <button class="btn btn-primary">
                                 Add
                             </button>
+                        @endcan
 
                         {!! Form::close() !!}
 
@@ -60,19 +61,22 @@
                                         <tr>
                                             <td>{{$item->name}}</td>
                                             <td class="row">
-                                                <button
-                                                data-toggle="modal" data-target="#editModal"
-                                                data-id="{{ $item->id }}"
-                                                data-name="{{ $item->name }}"
-                                                class="btn btn-xs btn-success">
-                                                    Edit
-                                                </button>
+                                                @can('edit_permission')
+                                                    <button
+                                                    data-toggle="modal" data-target="#editModal"
+                                                    data-id="{{ $item->id }}"
+                                                    data-name="{{ $item->name }}"
+                                                    class="btn btn-xs btn-success">
+                                                        Edit
+                                                    </button>
+                                                @endcan
+                                                @can('delete_permission')
+                                                    {!! Form::open(['route'=>'permission.delete','method'=>'delete']) !!}
+                                                        {{ Form::hidden('id',$item->id) }}
+                                                        <button class="btn btn-xs btn-danger">Delete</button>
 
-                                                {!! Form::open(['route'=>'permission.delete','method'=>'delete']) !!}
-                                                    {{ Form::hidden('id',$item->id) }}
-                                                    <button class="btn btn-xs btn-danger">Delete</button>
-
-                                                {!! Form::close() !!}
+                                                    {!! Form::close() !!}
+                                                @endcan
                                             </td>
                                         </tr>
 

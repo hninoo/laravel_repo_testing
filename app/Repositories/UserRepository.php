@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories;
 use App\User;
-
+use Illuminate\Support\Facades\Validator;
 Class UserRepository extends BaseRepository
 {
     protected $model;
@@ -14,7 +14,7 @@ Class UserRepository extends BaseRepository
     {
         $validator = Validator::make($data,[
             'name' => 'required|string|unique:users',
-            'email'=> 'required',
+            'email'=> 'email|required',
             'role_id' => 'required',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|same:password',

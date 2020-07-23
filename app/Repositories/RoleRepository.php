@@ -22,18 +22,30 @@ Class RoleRepository extends BaseRepository
     {
         $validator = Validator::make($data, [
 
-                'name'      => 'required|string|unique:roles',
+                'name'      => 'required',
 
             ],
             [
-
-                'name.unique'           => 'The name has already been taken.!',
                 'name.required'         => 'The name field is required.',
 
             ]
         );
 
         return $validator;
+    }
+    public function existcheck($id)
+    {
+        $data = $this->model->where('id','<>',$id)->select('name')->first();
+        return $data;
+    }
+    public function getRole()
+    {
+        $data=[];
+        $roles = $this->model->select('id','name')->orderby('id','DESC')->get();
+        foreach ($roles as $key => $value) {
+            $data[$value->id]=$value->name;
+        }
+        return $data;
     }
 
 }

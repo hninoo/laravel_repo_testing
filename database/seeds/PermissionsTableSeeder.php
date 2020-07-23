@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 
 class PermissionsTableSeeder extends Seeder
 {
@@ -11,9 +12,6 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('permissions')->insert([
-            'name' => 'create',
-            'guard_name' => 'web',
-        ]);
+        $permission = Permission::create(['name' => 'create_role','guard_name'=>'web']);
     }
 }

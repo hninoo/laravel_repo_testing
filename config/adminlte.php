@@ -186,7 +186,8 @@ return [
         [
             'text' => 'Task',
             'route'  => 'task.index',
-            'icon' => 'far fa-fw fa-plus-square fa-sm'
+            'icon' => 'far fa-fw fa-plus-square fa-sm',
+            'can' => 'task_list'
         ],
 
     ],

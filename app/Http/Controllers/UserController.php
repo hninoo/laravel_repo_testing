@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use App\Repositories\RoleRepository;
+use App\User;
 class UserController extends Controller
 {
 
@@ -35,8 +36,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = $this->roleRepo->getAll();
-     
+        $roles = $this->roleRepo->getRole();
         return view('users.create',compact('roles'));
     }
 
@@ -48,13 +48,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = $this->userRepo->validator($request->all());
         if($validator->fails()){
 
             return back()->withErrors($validator)->withInput();
 
         }
-        $data = [];
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role_id' => $request->role_id,
+            'password' => bcrypt($request->password),
+            'created_at' => date('Y-m-d H:m:s'),
+            'updated_at' => date('Y-m-d H:m:s'),
+        ]);
+
+        $role = $this->roleRepo->getById($request->role_id);
+
+        $user->assignRole($role->name);
+
+
+
         return redirect()->back()->with('status','Success!');
 
     }
@@ -67,7 +83,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -76,9 +92,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $user = $this->userRepo->getById($request->id);
+        $roles = $this->roleRepo->getRole();
+        return view('users.edit',compact('user','roles'));
     }
 
     /**
@@ -88,9 +106,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+
+        $user = $this->userRepo->getById($request->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role_id = $request->role_id;
+        $user->save();
+        $role = $this->roleRepo->getById($request->role_id);
+
+        $user->assignRole($role->name);
+
+        return redirect()->back()->with('status','Update Success!');
     }
 
     /**
@@ -101,6 +129,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
+
         $this->userRepo->delete($request->id);
         return redirect()->back()->with('status','Delete Success!');
     }
