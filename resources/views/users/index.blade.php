@@ -41,14 +41,14 @@
                                                 @can('edit_user')
                                                     {!! Form::open(['route'=>'users.edit','method'=>'get']) !!}
                                                         {{ Form::hidden('id',$item->id) }}
-                                                        <button class="btn btn-xs btn-success">Edit</button>
+                                                        <button class="btn btn-xs btn-success"><i class="far fa-edit"></i>Edit</button>
 
                                                     {!! Form::close() !!}
                                                 @endcan
                                                 @can('delete_user')
                                                     {!! Form::open(['route'=>'users.delete','method'=>'delete']) !!}
                                                         {{ Form::hidden('id',$item->id) }}
-                                                        <button class="btn btn-xs btn-danger">Delete</button>
+                                                        <button class="btn btn-xs btn-danger"><i class="far fa-times-circle"></i>Delete</button>
 
                                                     {!! Form::close() !!}
                                                 @endcan

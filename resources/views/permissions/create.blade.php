@@ -36,6 +36,7 @@
                             @endif
                         @can('create_permission')
                             <button class="btn btn-primary">
+                                <i class="fas fa-plus-circle"></i>
                                 Add
                             </button>
                         @endcan
@@ -62,18 +63,21 @@
                                             <td>{{$item->name}}</td>
                                             <td class="row">
                                                 @can('edit_permission')
-                                                    <button
-                                                    data-toggle="modal" data-target="#editModal"
-                                                    data-id="{{ $item->id }}"
-                                                    data-name="{{ $item->name }}"
-                                                    class="btn btn-xs btn-success">
-                                                        Edit
-                                                    </button>
+                                                    <div>
+                                                        <button
+                                                        data-toggle="modal" data-target="#editModal"
+                                                        data-id="{{ $item->id }}"
+                                                        data-name="{{ $item->name }}"
+                                                        class="btn btn-xs btn-success">
+                                                        <i class="far fa-edit"></i>Edit
+                                                        </button>
+                                                    </div>
+
                                                 @endcan
                                                 @can('delete_permission')
                                                     {!! Form::open(['route'=>'permission.delete','method'=>'delete']) !!}
                                                         {{ Form::hidden('id',$item->id) }}
-                                                        <button class="btn btn-xs btn-danger">Delete</button>
+                                                        <button class="btn btn-xs btn-danger"><i class="far fa-times-circle"></i>Delete</button>
 
                                                     {!! Form::close() !!}
                                                 @endcan

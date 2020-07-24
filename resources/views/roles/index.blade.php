@@ -40,14 +40,14 @@
                                                 @can('create_role')
                                                     {!! Form::open(['route'=>'role.edit','method'=>'get']) !!}
                                                         {{ Form::hidden('id',$item->id) }}
-                                                        <button class="btn btn-xs btn-success">Edit</button>
+                                                        <button class="btn btn-xs btn-success"><i class="far fa-edit"></i>Edit</button>
 
                                                     {!! Form::close() !!}
                                                 @endcan
                                                 @can('delete_role')
                                                     {!! Form::open(['route'=>'role.delete','method'=>'delete']) !!}
                                                         {{ Form::hidden('id',$item->id) }}
-                                                        <button class="btn btn-xs btn-danger">Delete</button>
+                                                        <button class="btn btn-xs btn-danger"><i class="far fa-times-circle"></i>Delete</button>
 
                                                     {!! Form::close() !!}
                                                 @endcan

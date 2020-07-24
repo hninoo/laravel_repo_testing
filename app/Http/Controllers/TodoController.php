@@ -7,6 +7,7 @@ use App\Repositories\StatusRepository;
 use App\Repositories\TodoRepository;
 use App\Exports\TodosExport;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 class TodoController extends Controller
 {
 
@@ -126,11 +127,42 @@ class TodoController extends Controller
 
     }
     /**
-     * Generate Pdf
+     * Generate Pdf For All
      */
     public function generatePDF(Request $request)
     {
-       dd($request);
+
+        if($request->hiddenid == null)
+        {
+            return redirect()->back()->withErrors(["error"=>'Please Check All CheckBox']);
+        }
+        else
+        {
+            $result_arr = array();
+            $data = $this->todorepo->getDataPDF($request->hiddenid);
+
+            $pdf = PDF::loadView('exports.todopdf',
+                            ['data' => $data]);
+            return $pdf->download('todotask.pdf');
+        }
+
+    }
+    /**
+     * Print Pdf
+     */
+    public function printPdf(Request $request)
+    {
+        $id=$request->input('id');
+
+        $data = $this->todorepo->getById($id);
+
+        $pdf = PDF::loadView('exports.todopdfprint', [
+            'data' => $data
+
+        ]);
+        // return $pdf->download('todotask.pdf');
+        return base64_encode($pdf->download('todotask.pdf'));
+
     }
 
 

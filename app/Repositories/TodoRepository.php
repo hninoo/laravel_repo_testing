@@ -32,5 +32,13 @@ class TodoRepository extends BaseRepository
         return $model->push();
 
     }
+    public function getDataPDF(array $data)
+    {
+
+        foreach ($data as $key => $value) {
+            $arr[] = $this->model->where('id',$value)->select('task_name','status_id')->get();
+        }
+        return $arr;
+    }
 
 }
