@@ -10,13 +10,16 @@
     <table style="width:100%;">
         <thead style="width:100%;">
             <tr style="width:100%;">
-                <th style="width: 10%;">No</th>
+
                 <th style="width: 50%;">Task</th>
                 <th style="width: 55%;">Status</th>
             </tr>
         </thead>
         <tbody style="width:100%;">
-
+            <tr>
+                <td style="width: 50%;padding-left:150px;">{{$data->task_name}}</td>
+                <td style="width: 50%;padding-left:150px;">{{$data->status->name}}</td>
+            </tr>
         </tbody>
     </table>
 </body>
