@@ -10,6 +10,7 @@
     @if(! config('adminlte.enabled_laravel_mix'))
     <link rel="stylesheet" href="{{ asset('public/vendor/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/vendor/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('public/vendor/adminlte/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/custom.css') }}">
 
@@ -40,6 +41,8 @@
 <script src="{{ asset('public/vendor/jquery/jquery.min.js') }}"></script>
 <!-- for dropdown -->
 <script src="{{ asset('public/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- for summernote -->
+<script src="{{ asset('public/vendor/summernote/summernote-bs4.min.js') }}"></script>
 
 @include('adminlte::plugins', ['type' => 'js'])
 

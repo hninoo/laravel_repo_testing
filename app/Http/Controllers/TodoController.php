@@ -57,10 +57,16 @@ class TodoController extends Controller
 
         }
         $data = [];
-
+        $description = $request->description;
+        $dom = new \domdocument();
+        $dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $description = $dom->savehtml();
+       
         $data['task_name'] = $request->task_name;
+        $data['description'] = $description;
         $data['user_id'] = 1;
         $data['status_id'] = 1;
+       
         try{
             $this->todorepo->create($data);
         }catch(\Exception $e){

@@ -39,11 +39,9 @@
                             <div class="form-group">
                                 {{ Form::text('task_name','',array('class'=>'form-control','placeholder'=>'Enter Task')) }}
                             </div>
-                             @if ($errors->has('task_name'))
-                                    <span class="invalid-feedback">
-                                        {{ $errors->first('task_name') }}
-                                    </span>
-                            @endif
+                            <div class="form-group">
+                                {{ Form::textarea('description','',array('class'=>'form-control','placeholder'=>'Description','id'=>'description')) }}
+                            </div>
                             @can('create_task')
                                 <button class="btn btn-primary">
                                     <i class="fas fa-plus-circle"></i>
@@ -65,6 +63,7 @@
 
                                             <th>Name</th>
                                             <th>status</th>
+                                            <th>Description</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -74,6 +73,7 @@
                                                 {{-- <td>{!! Form::checkbox('id', $item->id,'', array('class'=>'todols')) !!}</td> --}}
                                                 <td>{{$item->task_name}}</td>
                                                 <td>{{$item->status->name}}</td>
+                                                <td>{!! $item->description !!}</td>
                                                 <td class="row">
                                                     @can('edit_task')
                                                         {!! Form::open(['route'=>'task.assign','method'=>'POST']) !!}
@@ -216,6 +216,21 @@ $(document).ready(function(){
 
 
 });
+
+$('#description').summernote({
+    	height: 100,
+    	
+    	toolbar: [
+   		
+	    ['style', ['bold', 'italic', 'underline']],
+	    
+	    ['fontsize', ['fontsize']],
+
+	    ['color', ['color']],
+
+	  ],
+	  
+    });
 
 function print(id){
     var formData = {id: id}

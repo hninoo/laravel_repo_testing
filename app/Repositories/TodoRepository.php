@@ -36,7 +36,7 @@ class TodoRepository extends BaseRepository
     {
 
         foreach ($data as $key => $value) {
-            $arr[] = $this->model->where('id',$value)->select('task_name','status_id')->get();
+            $arr[] = $this->model->where('id',$value)->select('task_name','status_id','description')->get();
         }
         return $arr;
     }

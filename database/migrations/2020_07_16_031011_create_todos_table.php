@@ -18,6 +18,7 @@ class CreateTodosTable extends Migration
             $table->string('task_name');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('status_id');
+            $table->text('description');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('status_id')->references('id')->on('statuses');

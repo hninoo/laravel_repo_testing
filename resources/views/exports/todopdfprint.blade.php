@@ -12,13 +12,15 @@
             <tr style="width:100%;">
 
                 <th style="width: 50%;">Task</th>
-                <th style="width: 55%;">Status</th>
+                <th style="width: 10%;">Status</th>
+                <th style="width: 40%;">Description</th>
             </tr>
         </thead>
         <tbody style="width:100%;">
             <tr>
-                <td style="width: 50%;padding-left:150px;">{{$data->task_name}}</td>
-                <td style="width: 50%;padding-left:150px;">{{$data->status->name}}</td>
+                <td style="width: 50%;">{{$data->task_name}}</td>
+                <td style="width: 10%;">{{$data->status->name}}</td>
+                <td style="width: 40%;">{!! $data->description !!}</td>
             </tr>
         </tbody>
     </table>

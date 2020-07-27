@@ -25,8 +25,7 @@
     })->name('logout');
 
     Auth::routes();
-
-
+    Route::get('/home', ['as' => 'control-panel/home', 'uses' => 'HomeController@index']);
 
     Route::group(['prefix' => 'control-panel', 'middleware' => 'auth'], function() {
         Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@index']);

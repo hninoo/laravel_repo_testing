@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use App\User;
 class UsersTableSeeder extends Seeder
 {
@@ -23,7 +24,9 @@ class UsersTableSeeder extends Seeder
         ]);
 
         $role = Role::find(1);
+        $permissions = Permission::all();
 
         $user->assignRole($role->name);
+        $role->givePermissionTo($permissions);
     }
 }

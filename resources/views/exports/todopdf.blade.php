@@ -11,17 +11,19 @@
         <thead style="width:100%;">
             <tr style="width:100%;">
                 <th style="width: 10%;">No</th>
-                <th style="width: 50%;">Task</th>
-                <th style="width: 55%;">Status</th>
+                <th style="width: 30%;">Task</th>
+                <th style="width: 20%;">Status</th>
+                <th style="width: 40%;">Description</th>
             </tr>
         </thead>
         <tbody style="width:100%;">
             @foreach ($data as $key=>$item)
 
                 <tr style="width:100%;" >
-                    <td style="width: 10%;padding-left: 15px;">{{++$key}}</td>
-                    <td style="width: 50%;padding-left: 130px;">{{$item[0]['task_name']}}</td>
-                    <td style="width: 60%;padding-left: 160px;">{{$item[0]->status->name}}</td>
+                    <td style="width: 10%;">{{++$key}}</td>
+                    <td style="width: 30%;">{{$item[0]['task_name']}}</td>
+                    <td style="width: 20%;">{{$item[0]->status->name}}</td>
+                    <td style="width: 40%;">{!! $item[0]->description !!}</td>
                 </tr>
             @endforeach
 

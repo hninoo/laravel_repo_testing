@@ -8,7 +8,7 @@ class Todo extends Model
 {
     use Authenticatable;
     protected $table = 'todos';
-    protected $fillable = ['task_name','user_id','status_id'];
+    protected $fillable = ['task_name','user_id','status_id','description'];
     protected $hidden = ['id'];
     public function tasks()
     {
