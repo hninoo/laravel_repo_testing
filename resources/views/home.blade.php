@@ -7,7 +7,6 @@
     padding: 0;
     margin-left: 5px;
 }
-
 </style>
 @section('content')
     <div class="row">
