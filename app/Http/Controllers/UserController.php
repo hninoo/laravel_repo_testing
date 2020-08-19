@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use App\Repositories\RoleRepository;
 use App\User;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\User as UserResource;
+
 class UserController extends Controller
 {
-
-    function __construct(UserRepository $userRepo,RoleRepository $roleRepo)
-	{
-
+    public function __construct(UserRepository $userRepo, RoleRepository $roleRepo)
+    {
         $this->userRepo = $userRepo;
         $this->roleRepo = $roleRepo;
     }
@@ -23,10 +24,17 @@ class UserController extends Controller
      */
     public function index()
     {
+        // return (new UserCollection(User::all()->load('roles')))
+        //         ->additional(['meta' => [
+        //             'key' => 'value',
+        //         ]]);
+        
+        return UserResource::collection(User::paginate(), 200);
+
+        // return UserResource::collection(User::all()->keyBy->id);
+
         $users = $this->userRepo->getAll();
-
-
-        return view('users.index',compact('users'));
+        return new UserCollection($users);
     }
 
     /**
@@ -37,7 +45,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = $this->roleRepo->getRole();
-        return view('users.create',compact('roles'));
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -48,12 +56,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = $this->userRepo->validator($request->all());
-        if($validator->fails()){
-
+        if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-
         }
 
         $user = User::create([
@@ -71,8 +76,7 @@ class UserController extends Controller
 
 
 
-        return redirect()->back()->with('status','Success!');
-
+        return redirect()->back()->with('status', 'Success!');
     }
 
     /**
@@ -83,7 +87,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -96,7 +99,7 @@ class UserController extends Controller
     {
         $user = $this->userRepo->getById($request->id);
         $roles = $this->roleRepo->getRole();
-        return view('users.edit',compact('user','roles'));
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -108,7 +111,6 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-
         $user = $this->userRepo->getById($request->id);
         $user->name = $request->name;
         $user->email = $request->email;
@@ -118,7 +120,7 @@ class UserController extends Controller
 
         $user->assignRole($role->name);
 
-        return redirect()->back()->with('status','Update Success!');
+        return redirect()->back()->with('status', 'Update Success!');
     }
 
     /**
@@ -129,8 +131,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-
         $this->userRepo->delete($request->id);
-        return redirect()->back()->with('status','Delete Success!');
+        return redirect()->back()->with('status', 'Delete Success!');
     }
 }
