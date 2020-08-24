@@ -14,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
+        // $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
     }
 
     /**
@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Schema::defaultStringLength(191);
-        // JsonResource::withoutWrapping();
+        // \Schema::defaultStringLength(191);
+        JsonResource::withoutWrapping();
     }
 }

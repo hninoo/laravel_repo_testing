@@ -27,10 +27,14 @@ abstract class BaseRepository
         $model->fill($data);
         return $model->push();
     }
-    
+
     public function delete($id)
     {
         return $this->model->destroy($id);
+    }
+    public function getPaginate($perPage)
+    {
+       return $this->model->paginate($perPage);
     }
 
 

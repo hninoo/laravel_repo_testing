@@ -15,6 +15,7 @@ class UserController extends Controller
     {
         $this->userRepo = $userRepo;
         $this->roleRepo = $roleRepo;
+        $this->perPage = 15;
     }
 
     /**
@@ -24,16 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // return (new UserCollection(User::all()->load('roles')))
-        //         ->additional(['meta' => [
-        //             'key' => 'value',
-        //         ]]);
-        
-        return UserResource::collection(User::paginate(), 200);
-
-        // return UserResource::collection(User::all()->keyBy->id);
-
-        $users = $this->userRepo->getAll();
+        $users = $this->userRepo->getPaginate($this->perPage);
         return new UserCollection($users);
     }
 

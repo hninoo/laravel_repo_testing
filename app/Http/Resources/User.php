@@ -12,15 +12,15 @@ class User extends JsonResource
 {
 
     // public $preserveKeys = true;
-    //  public static $wrap = 'result';
-
     public function toArray($request)
     {
         // return parent::toArray($request);
+
+
         $role = Role::where('id', $this->role_id)->first();
 
-        return [
 
+        return[
                 'user_id' => $this->id,
                 'name' => $this->name,
                 'email' => $this->email,
@@ -29,6 +29,6 @@ class User extends JsonResource
                     'roleId' =>$role->id,
                     'roleName'=>$role->name
                 ])
-        ];
+            ];
     }
 }
